@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package EnvioclickPlugin
+ */
 /*
 Plugin Name: Woocommerce EnvioClick
 Description: Integration of woocommerce with the shipping provider EnvioClick.
@@ -17,6 +20,12 @@ Domain Path:  /languages
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+if ( file_exists( dirname( __FILE__ ) . 'vendor/autoload.php' ) ) {
+	require_once dirname( __FILE__ ) . 'vendor/autoload.php';
+}
+
+use Inc\Deactivate;
 
 if ( !class_exists('WC_Envioclick') ){
 	class WC_Envioclick
@@ -92,10 +101,13 @@ if ( !class_exists('WC_Envioclick') ){
 
 	}
 
-	if ( class_exists( 'WC_Envioclick' ) ){
-		$wc_envioclick = new WC_Envioclick();
-		$wc_envioclick->register();
-	}
+	
+	$wc_envioclick = new WC_Envioclick();
+	$wc_envioclick->register();
+
+	//Deactivation
+	register_deactivation_hook( __FILE__, array( 'Deactivate', 'deactivate') );
+	
 }
 
 /**
