@@ -26,6 +26,7 @@ if ( file_exists( dirname( __FILE__ ) . 'vendor/autoload.php' ) ) {
 }
 
 use Inc\Deactivate;
+use Inc\Admin\AdminPages;
 
 if ( !class_exists('WC_Envioclick') ){
 	class WC_Envioclick
