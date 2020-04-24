@@ -59,7 +59,7 @@ if ( !class_exists('WC_Envioclick') ){
 
 	    function enqueue(){
 	    	// enqueue all the scripts
-	    	wp_enqueue_style( 'mypluginstyle', plugins_url('/assets/mystyle.css', __FILE__) );
+	    	wp_enqueue_style( 'adminEnvioclickStyles', plugins_url('/assets/admin.css', __FILE__) );
 	    }
 
 	 //    /*
@@ -107,7 +107,7 @@ if ( !class_exists('WC_Envioclick') ){
 
 	//Deactivation
 	register_deactivation_hook( __FILE__, array( 'Deactivate', 'deactivate') );
-	
+
 }
 
 /**
