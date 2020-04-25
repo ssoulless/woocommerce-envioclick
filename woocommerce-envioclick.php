@@ -25,91 +25,33 @@ if ( file_exists( dirname( __FILE__ ) . 'vendor/autoload.php' ) ) {
 	require_once dirname( __FILE__ ) . 'vendor/autoload.php';
 }
 
-use Inc\Deactivate;
-use Inc\Admin\AdminPages;
+define( 'PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-if ( !class_exists('WC_Envioclick') ){
-	class WC_Envioclick
-	{
-
-		public $plugin;
-
-		function __construct(){
-			$this->plugin = plugin_basename( __FILE__ );
-		}
-    
-	    function register(){
-	    	add_action( 'admin_enqueue_scripts', array($this, 'enqueue') );
-	    	add_action( 'admin_menu', array( $this, 'add_admin_pages' ) );
-	    	add_filter( "plugin_action_links_$this->plugin", array( $this, 'settings_link') );
-	    }
-
-	    public function settings_link( $links ){
-	    	$settings_link = '<a href="admin.php?page=envioclick_plugin">Settings</a>';
-	    	array_push( $links, $settings_link);
-	    	return $links;
-	    }
-
-	    public function add_admin_pages(){
-	    	add_menu_page( 'EnvioClick', 'EnvioClick', 'manage_options', 'envioclick_plugin', array( $this, 'admin_index' ), 'dashicons-admin-generic', 9 );
-	    }
-
-	    public function admin_index(){
-	    	require_once plugin_dir_path( __FILE__ ) . 'templates/admin.php';
-	    }
-
-	    function enqueue(){
-	    	// enqueue all the scripts
-	    	wp_enqueue_style( 'adminEnvioclickStyles', plugins_url('/assets/admin.css', __FILE__) );
-	    }
-
-	 //    /*
-		// * Add action button in order list to change order status from completed to delivered
-		// */
-		// public function add_shipped_order_status_actions_button($actions, $order){
-			
-		// 	// wp_enqueue_style( 'shipment_tracking_styles',  wc_advanced_shipment_tracking()->plugin_dir_url() . 'assets/css/admin.css', array(), wc_advanced_shipment_tracking()->version );	
-		// 	// wp_enqueue_script( 'woocommerce-advanced-shipment-tracking-js', wc_advanced_shipment_tracking()->plugin_dir_url() . 'assets/js/admin.js', array( 'jquery' ), wc_advanced_shipment_tracking()->version);
-			
-		// 	$actions['add_tracking'] = array(
-		// 		'url'       => "#".$order->get_id(),
-		// 		'name'      => __( 'Add Tracking', 'woo-advanced-shipment-tracking' ),
-		// 		'action'    => "add_inline_tracking", // keep "view" class for a clean button CSS
-		// 	);		
-		// 	return $actions;
-		// }
-
-	     /**
-	     * Get MP alert frame for notfications 
-	     *
-	     * @param string $message
-	     * @param string $type
-	     * @return void
-	     */
-	    public static function getAlertFrame($message, $type)
-	    {
-	        return '<div class="notice '.$type.' is-dismissible">
-	                    <div class="mp-alert-frame"> 
-	                        <div class="mp-right-alert">
-	                            <p>' . $message . '</p>
-	                        </div>
-	                    </div>
-	                    <button type="button" class="notice-dismiss">
-	                        <span class="screen-reader-text">' . __('Discard', 'woocommerce-envioclick') . '</span>
-	                    </button>
-	                </div>';
-	    }
-
-	}
-
-	
-	$wc_envioclick = new WC_Envioclick();
-	$wc_envioclick->register();
-
-	//Deactivation
-	register_deactivation_hook( __FILE__, array( 'Deactivate', 'deactivate') );
-
+if ( class_exists( 'Inc\\Init') ) {
+	Inc\Init::register_services();
 }
+
+// 	     /**
+// 	     * Get MP alert frame for notfications 
+// 	     *
+// 	     * @param string $message
+// 	     * @param string $type
+// 	     * @return void
+// 	     */
+// 	    public static function getAlertFrame($message, $type)
+// 	    {
+// 	        return '<div class="notice '.$type.' is-dismissible">
+// 	                    <div class="mp-alert-frame"> 
+// 	                        <div class="mp-right-alert">
+// 	                            <p>' . $message . '</p>
+// 	                        </div>
+// 	                    </div>
+// 	                    <button type="button" class="notice-dismiss">
+// 	                        <span class="screen-reader-text">' . __('Discard', 'woocommerce-envioclick') . '</span>
+// 	                    </button>
+// 	                </div>';
+// 	    }
 
 /**
  * Summary: Places a warning error to notify user that WooCommerce is missing.
