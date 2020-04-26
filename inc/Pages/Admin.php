@@ -1,9 +1,7 @@
 <?php
-
 /**
-* @package EnvioclickPlugin
-*/
-
+ * @package EnvioclickPlugin
+ */
 namespace Inc\Pages;
 
 use \Inc\Base\BaseController;

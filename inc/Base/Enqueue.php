@@ -1,9 +1,7 @@
 <?php
-
 /**
-* @package EnvioclickPlugin
-*/
-
+ * @package EnvioclickPlugin
+ */
 namespace Inc\Base;
 
 use \Inc\Base\BaseController;
@@ -17,6 +15,6 @@ class Enqueue extends BaseController
 
 	function enqueue(){
 		// enqueue all the scripts
-		wp_enqueue_style( 'adminEnvioclickStyles', $this->plugin_url . 'assets/admin.css' ) );
+		wp_enqueue_style( 'adminEnvioclickStyles', $this->plugin_url . 'assets/admin.css' );
 	}
 }

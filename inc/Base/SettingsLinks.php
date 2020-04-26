@@ -1,9 +1,7 @@
 <?php
-
 /**
  * @package EnvioclickPlugin
  */
-
 namespace Inc\Base;
 
 use \Inc\Base\BaseController;
@@ -18,7 +16,7 @@ class SettingsLinks extends BaseController
 
 	public function settings_link( $links ) 
 	{
-		$settings_link = '<a href=""admin.php?page=envioclick_plugin">Settings</a>';
+		$settings_link = '<a href="admin.php?page=envioclick_plugin">Settings</a>';
 		array_push($links, $settings_link);
 		return $links;
 	}

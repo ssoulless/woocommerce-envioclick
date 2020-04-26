@@ -2,7 +2,6 @@
 /**
  * @package EnvioclickPlugin
  */
-
 namespace Inc;
 
 final class Init

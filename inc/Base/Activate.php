@@ -1,9 +1,7 @@
 <?php
-
 /**
  * @package EnvioclickPlugin
  */
-
 namespace Inc\Base;
 
 
