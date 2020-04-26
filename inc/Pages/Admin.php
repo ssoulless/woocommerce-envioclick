@@ -11,7 +11,15 @@ class Admin extends BaseController
 {
 	public $settings;
 
-	public $pages = [
+	public $pages = array();
+
+	public $subpages = array();
+
+	public function __construct()
+	{
+		$this->settings = new SettingsApi();
+
+		$this->pages = [
 			[
 				'page_title' => 'EnvioClick', 
 				'menu_title' => 'EnvioClick', 
@@ -23,13 +31,21 @@ class Admin extends BaseController
 			]
 		];
 
-	public function __construct()
-	{
-		$this->settings = new SettingsApi();
+		$this->subpages = [
+			[
+				'parent_slug' => 'envioclick_plugin',
+				'page_title' => 'Authentication', 
+				'menu_title' => 'API Authentication', 
+				'capability' => 'manage_options', 
+				'menu_slug' => 'envioclick_authentication', 
+				'callback' => function() { echo '<h1>Envioclick API Authentication</h1>'; }
+			]
+		];
 	}
 
 	public function register() {
-		$this->settings->add_pages( $this->pages )->register();
+		//To add more sub pages in the future
+		$this->settings->add_pages( $this->pages )->with_subpage( 'General Settings' )->add_subpages( $this->subpages )->register();
 	}
 
 	// public function add_admin_pages(){
