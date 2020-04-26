@@ -6,7 +6,9 @@
 
 namespace Inc\Base;
 
-class Admin
+use \Inc\Base\BaseController;
+
+class Enqueue extends BaseController
 {
 
 	public function register() {
@@ -15,6 +17,6 @@ class Admin
 
 	function enqueue(){
 		// enqueue all the scripts
-		wp_enqueue_style( 'adminEnvioclickStyles', PLUGIN_URL . 'assets/admin.css' ) );
+		wp_enqueue_style( 'adminEnvioclickStyles', $this->plugin_url . 'assets/admin.css' ) );
 	}
 }

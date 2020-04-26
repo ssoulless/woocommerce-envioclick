@@ -21,13 +21,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Requiere once the Composer Autoload
 if ( file_exists( dirname( __FILE__ ) . 'vendor/autoload.php' ) ) {
 	require_once dirname( __FILE__ ) . 'vendor/autoload.php';
 }
 
-define( 'PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+/**
+ * The code that runs during plugin activation
+ */
+function activate_envioclick_plugin() {
+	Inc\Base\Activate::activate();
+}
+register_activation_hook( __FILE__, 'activate_envioclick_plugin' );
 
+/**
+ * The code that runs during plugin deactivation
+ */
+function deactivate_envioclick_plugin() {
+	Inc\Base\Deactivate::deactivate();
+}
+register_deactivation_hook( __FILE__, 'deactivate_envioclick_plugin' );
+
+
+// Initializes all the Core classes of the plugin
 if ( class_exists( 'Inc\\Init') ) {
 	Inc\Init::register_services();
 }
@@ -57,18 +73,18 @@ if ( class_exists( 'Inc\\Init') ) {
  * Summary: Places a warning error to notify user that WooCommerce is missing.
  * Description: Places a warning error to notify user that WooCommerce is missing.
  */
-function notify_woocommerce_miss()
-{
-    $type = 'error';
-    $message = sprintf(
-            __('The payment module of Woo EnvioClick depends on the latest version of %s to run!', 'woocommerce-mercadopago'),
-            ' <a href="https://wordpress.org/extend/plugins/woocommerce/">WooCommerce</a>'
-        );
-    echo WC_Envioclick::getAlertFrame($message, $type);
-}
+// function notify_woocommerce_miss()
+// {
+//     $type = 'error';
+//     $message = sprintf(
+//             __('The payment module of Woo EnvioClick depends on the latest version of %s to run!', 'woocommerce-mercadopago'),
+//             ' <a href="https://wordpress.org/extend/plugins/woocommerce/">WooCommerce</a>'
+//         );
+//     echo WC_Envioclick::getAlertFrame($message, $type);
+// }
 
-$all_plugins = apply_filters('active_plugins', get_option('active_plugins'));
-if (!stripos(implode($all_plugins), 'woocommerce.php')) {
-    add_action('admin_notices', 'notify_woocommerce_miss');
-    return;
-}
+// $all_plugins = apply_filters('active_plugins', get_option('active_plugins'));
+// if (!stripos(implode($all_plugins), 'woocommerce.php')) {
+//     add_action('admin_notices', 'notify_woocommerce_miss');
+//     return;
+// }
