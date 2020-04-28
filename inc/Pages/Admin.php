@@ -73,10 +73,6 @@ class Admin extends BaseController
 				'option_group' => 'envioclick_options_group',
 				'option_name' => 'text_example',
 				'callback' => array( $this->callbacks, 'envioclick_options_group')
-			),
-			array(
-				'option_group' => 'envioclick_options_group',
-				'option_name' => 'api_key'
 			)
 		);
 
@@ -110,20 +106,9 @@ class Admin extends BaseController
 					'label_for' => 'text_example',
 					'class' => 'example-class'
 				)
-			),
-			array(
-				'id' => 'api_key',
-				'title' => 'API Key',
-				'callback' => array( $this->callbacks, 'envioclick_api_key'),
-				'page' => 'envioclick_plugin',
-				'section' => 'envioclick_admin_index',
-				'args' => array(
-					'label_for' => 'api_key',
-					'class' => 'example-class'
-				)
 			)
 		);
 
-		$this->settings->set_sections( $args );
+		$this->settings->set_fields( $args );
 	}
 }
