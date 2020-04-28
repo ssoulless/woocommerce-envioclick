@@ -28,7 +28,12 @@ class Admin extends BaseController
 
 		$this->set_subpages();
 
-		//To add more sub pages in the future
+		$this->set_settings();
+
+		$this->set_sections();
+
+		$this->set_fields();
+
 		$this->settings->add_pages( $this->pages )->with_subpage( 'General Settings' )->add_subpages( $this->subpages )->register();
 	}
 
@@ -40,7 +45,7 @@ class Admin extends BaseController
 				'menu_title' => 'EnvioClick', 
 				'capability' => 'manage_options', 
 				'menu_slug' => 'envioclick_plugin', 
-				'callback' => function() { echo '<h1>Envioclick Plugin</h1>'; }, 
+				'callback' => array( $this->callbacks, 'admin_general_settings' ), 
 				'icon_url' => 'dashicons-admin-generic', 
 				'position' => 9
 			)
@@ -56,8 +61,69 @@ class Admin extends BaseController
 				'menu_title' => 'API Authentication', 
 				'capability' => 'manage_options', 
 				'menu_slug' => 'envioclick_authentication', 
-				'callback' => function() { echo '<h1>Envioclick API Authentication</h1>'; }
+				'callback' => array( $this->callbacks, 'admin_authentication' )
 			)
 		);
+	}
+
+	public function set_settings()
+	{
+		$args = array(
+			array(
+				'option_group' => 'envioclick_options_group',
+				'option_name' => 'text_example',
+				'callback' => array( $this->callbacks, 'envioclick_options_group')
+			),
+			array(
+				'option_group' => 'envioclick_options_group',
+				'option_name' => 'api_key'
+			)
+		);
+
+		$this->settings->set_settings( $args );
+	}
+
+	public function set_sections()
+	{
+		$args = array(
+			array(
+				'id' => 'envioclick_admin_index',
+				'title' => 'Settings',
+				'callback' => array( $this->callbacks, 'envioclick_admin_section'),
+				'page' => 'envioclick_plugin'
+			)
+		);
+
+		$this->settings->set_sections( $args );
+	}
+
+	public function set_fields()
+	{
+		$args = array(
+			array(
+				'id' => 'text_example',
+				'title' => 'Text example',
+				'callback' => array( $this->callbacks, 'envioclick_text_example'),
+				'page' => 'envioclick_plugin',
+				'section' => 'envioclick_admin_index',
+				'args' => array(
+					'label_for' => 'text_example',
+					'class' => 'example-class'
+				)
+			),
+			array(
+				'id' => 'api_key',
+				'title' => 'API Key',
+				'callback' => array( $this->callbacks, 'envioclick_api_key'),
+				'page' => 'envioclick_plugin',
+				'section' => 'envioclick_admin_index',
+				'args' => array(
+					'label_for' => 'api_key',
+					'class' => 'example-class'
+				)
+			)
+		);
+
+		$this->settings->set_sections( $args );
 	}
 }
