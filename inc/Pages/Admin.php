@@ -75,7 +75,7 @@ class Admin extends BaseController
 				'callback' => array( $this->callbacks, 'select_sanitize' )
 			),
 			array(
-				'option_group' => 'envioclick_plugin_settings',
+				'option_group' => 'envioclick_plugin_authentication',
 				'option_name' => 'api_key',
 				'callback' => array( $this->callbacks, 'secret_key_hashing' )
 			)

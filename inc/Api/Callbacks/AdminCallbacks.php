@@ -29,11 +29,8 @@ class AdminCallbacks extends BaseController
 		);
 
 		if( ! in_array( $value, $valid_values ) ) {
-			$errors = new WP_Error( 'available_options_only', __( 'Please enter available options only', 'envioclick' ) );
-		}
-
-		if( is_wp_error( $errors ) ){
-			wp_die( $errors->get_error_message(), __( 'Select Error', 'envioclick') );
+			add_settings_error('quote_selection_preference', 'available_options_only', __('Only select options are available', 'envioclick'), 'error');
+			return get_option( 'quote_selection_preference' );
 		}
 
 		return $value;
@@ -43,7 +40,7 @@ class AdminCallbacks extends BaseController
 	{
 		$api_key = sanitize_text_field($input);
 
-		return password_hash( $api_key, PASSWORD_BCRYPT);
+		return $api_key;
 	}
 
 	public function envioclick_admin_section()
@@ -60,14 +57,15 @@ class AdminCallbacks extends BaseController
 	{
 		$value = esc_attr( get_option( 'quote_selection_preference' ) );
 		echo '<select type="text" class="regular-text" name="quote_selection_preference">
-				<option value="cheapest" ' . ($value == 'cheapest') ? 'selected' : '' .'>' . __('Por menor precio', 'envioclick') . '</option>
-				<option value="fastest" '. ($value == 'fastest') ? 'selected' : '' .'>' . __('Por menor tiempo de entrega', 'envioclick') . '</option>
+				<option value="cheapest" ' . ($value == 'cheapest' ? 'selected' : '') .'>' . __('Por menor precio', 'envioclick') . '</option>
+				<option value="fastest" '. ($value == 'fastest' ? 'selected' : '') .'>' . __('Por menor tiempo de entrega', 'envioclick') . '</option>
 			</select>';
 	}
 
 	public function envioclick_api_key_textfield()
 	{
 		$value = esc_attr( get_option( 'api_key' ) );
+		password_verify('rasmuslerdorf', $hash)
 		echo '<input type="text" class="regular-text" name="api_key" value="' . $value . '" placeholder="' . __('Pega la API key de envioclick aquí', 'envioclick') . '">';		
 	}
 }

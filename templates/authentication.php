@@ -4,8 +4,8 @@
 
 	<form method="post" action="options.php">
 		<?php
-			settings_fields( 'envioclick_plugin_settings' );
-			do_settings_sections( 'envioclick_authentication_index' );
+			settings_fields( 'envioclick_plugin_authentication' );
+			do_settings_sections( 'envioclick_authentication' );
 			submit_button();
 		?>
 	</form>
