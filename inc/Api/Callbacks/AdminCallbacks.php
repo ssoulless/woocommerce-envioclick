@@ -65,7 +65,7 @@ class AdminCallbacks extends BaseController
 	public function envioclick_api_key_textfield()
 	{
 		$value = esc_attr( get_option( 'api_key' ) );
-		password_verify('rasmuslerdorf', $hash)
+		
 		echo '<input type="text" class="regular-text" name="api_key" value="' . $value . '" placeholder="' . __('Pega la API key de envioclick aquí', 'envioclick') . '">';		
 	}
 }
