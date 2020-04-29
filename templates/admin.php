@@ -4,8 +4,8 @@
 
 	<form method="post" action="options.php">
 		<?php
-			settings_fields( 'envioclick_options_group' );
-			do_settings_sections( 'envioclick_plugin' );
+			settings_fields( 'envioclick_plugin_settings' );
+			do_settings_sections( 'envioclick_admin_index' );
 			submit_button();
 		?>
 	</form>

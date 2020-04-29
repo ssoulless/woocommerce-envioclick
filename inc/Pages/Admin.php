@@ -70,9 +70,14 @@ class Admin extends BaseController
 	{
 		$args = array(
 			array(
-				'option_group' => 'envioclick_options_group',
-				'option_name' => 'text_example',
-				'callback' => array( $this->callbacks, 'envioclick_options_group')
+				'option_group' => 'envioclick_plugin_settings',
+				'option_name' => 'quote_selection_preference',
+				'callback' => array( $this->callbacks, 'select_sanitize' )
+			),
+			array(
+				'option_group' => 'envioclick_plugin_settings',
+				'option_name' => 'api_key',
+				'callback' => array( $this->callbacks, 'secret_key_hashing' )
 			)
 		);
 
@@ -87,6 +92,12 @@ class Admin extends BaseController
 				'title' => 'Settings',
 				'callback' => array( $this->callbacks, 'envioclick_admin_section'),
 				'page' => 'envioclick_plugin'
+			),
+			array(
+				'id' => 'envioclick_authentication_index',
+				'title' => 'API Key Authentication',
+				'callback' => array( $this->callbacks, 'envioclick_authentication_section'),
+				'page' => 'envioclick_authentication'
 			)
 		);
 
@@ -97,15 +108,26 @@ class Admin extends BaseController
 	{
 		$args = array(
 			array(
-				'id' => 'text_example',
-				'title' => 'Text example',
-				'callback' => array( $this->callbacks, 'envioclick_text_example'),
+				'id' => 'shipping_quote_selection_preference',
+				'title' => __('¿Cómo se van a cotizar sus órdenes?', 'envioclick'),
+				'callback' => array( $this->callbacks, 'envioclick_quotation_preference_select'),
 				'page' => 'envioclick_plugin',
 				'section' => 'envioclick_admin_index',
 				'args' => array(
-					'label_for' => 'text_example',
-					'class' => 'example-class'
+					'label_for' => 'shipping_quote_selection_preference',
+					'class' => 'quotation_preferences'
 				)
+			),
+			array(
+				'id' => 'envioclick_api_key',
+				'title' => 'API Key',
+				'callback' => array( $this->callbacks, 'envioclick_api_key_textfield'),
+				'page' => 'envioclick_authentication',
+				'section' => 'envioclick_authentication_index',
+				'args' => array(
+					'label_for' => 'envioclick_api_key',
+					'class' => 'envioclick_api_key'
+				) 
 			)
 		);
 
