@@ -14,6 +14,7 @@ This plugin connects with the Envioclick REST API to automate the shipping of th
 * Conditional free shipping using shipping zones of wordpress
 * List of orders and tracking info from the user account in woocommerce
 * Avoid Envioclick quotation on digital products
+* Make order status trigger customizable
 
 ## Development
 
