@@ -11,10 +11,10 @@ class RestClientApi extends BaseController
 {
 	public function register()
 	{
-		add_action('woocommerce_order_status_changed', array($this, 'build_request' ) );
+		add_action('woocommerce_order_status_changed', array($this, 'build_and_send_request' ) );
 	}
 
-	public function build_request( $order_id, $old_status, $new_status )
+	public function build_and_send_request( $order_id, $old_status, $new_status )
 	{
 
 		if( $new_status == $this->status_trigger ) {
