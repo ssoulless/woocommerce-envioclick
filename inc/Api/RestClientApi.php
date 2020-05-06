@@ -48,7 +48,7 @@ class RestClientApi extends BaseController
                 'email' => $order_data['billing']['email'],
                 'phone' => $order_data['billing']['phone'],
                 'street' => $order_data['shipping']['address_1'],
-                'number' => '-',
+                'number' => '--',
                 'suburb' => 'NA',
                 'crossStreet' => 'NA',
                 'reference' => ( ! empty( $order_data['shipping']['address_1'] ) ? $order_data['shipping']['address_1'] : 'NA' ),
@@ -60,7 +60,7 @@ class RestClientApi extends BaseController
         		$product = $item->get_product();
 
         		if( empty( $product->get_length() ) || empty( $product->get_height() ) || empty( $product->get_width() ) || ! $product->has_weight() || empty( get_option( 'company_name' ) ) || empty( get_option( 'company_first_name' ) ) || empty( get_option( 'company_last_name' ) ) || empty( get_option( 'company_email' ) ) || empty( get_option( 'company_phone' ) ) || empty( get_option( 'company_street' ) ) || empty( get_option( 'company_street_number' ) ) || empty( get_option( 'company_suburb' ) ) || empty( get_option( 'company_crossstring' ) ) || empty( get_option( 'company_address_reference' ) ) ) {
-        			//Grab a user warning message/email.
+        			//TODO: Grab a user warning message.
         			continue;
         		}
 
@@ -79,10 +79,21 @@ class RestClientApi extends BaseController
 
                 $quotation_response = $this->send_quotation_request( $package, $origin_dane_code, $this->default_store_address, $destination_dane_code, $order_shipping_address);
 
+                if ( ! is_array( $quotation_response ) || empty( $quotation_response ) ) {
+                    //TODO: Throw exception, error to the user.
+                    return;
+                }
+
                 $selected_rate = $this->select_quotation( $quotation_response['data']['rates'], get_option( 'quote_selection_preference' ) );
 
                 $shipment_response = $this->send_shipment_request( $selected_rate['idRate'], $shipment_reference, $pickup_date, $package, $origin, $destination );
-                
+
+                if ($shipment_response['status'] != 'OK') {
+                    //TODO: Error message
+                }else{
+                    //TODO: Print success message
+                }
+
         	}
     	}
 	}
@@ -119,7 +130,7 @@ class RestClientApi extends BaseController
                 }
                 break;
             default:
-                //Send an exception, error message to the user.
+                //TODO: Send an exception, error message to the user.
                 break;
         }
 
@@ -138,18 +149,19 @@ class RestClientApi extends BaseController
         );
          
         $args = array(
+            'method' => 'POST',
             'headers' => array(
                 'AuthorizationKey' => get_option( 'api_key' )
             ),
             'body' => $body,
             'timeout' => 60,
-            'blocking' => true
+            'blocking' => false
         );
         $url = "$this->api_endpoint/quotation";
 
-        $results = wp_remote_post( $url, $args );
+        $results = wp_remote_retrieve_body( wp_remote_post( $url, $args ) );
 
-        return $results;
+        return json_decode( $results );
     }
 
     protected function send_shipment_request( $id_rate, $shipment_reference, $pickup_date, array $package, array $origin, array $destination, array $args )
@@ -176,18 +188,19 @@ class RestClientApi extends BaseController
         );
          
         $request_args = array(
+            'method' => 'POST',
             'headers' => array(
                 'AuthorizationKey' => get_option( 'api_key' )
             ),
             'body' => $body,
             'timeout' => 60,
-            'blocking' => true
+            'blocking' => false
         );
 
         $url = "$this->api_endpoint/shipment/request";
 
-        $results = wp_remote_post( $url, $request_args );
+        $results = wp_remote_retrieve_body( wp_remote_post( $url, $request_args ) );
 
-        return $results;
+        return json_decode( $results );
     }
 }
