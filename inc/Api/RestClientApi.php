@@ -34,10 +34,10 @@ class RestClientApi extends BaseController
                 'email' => get_option( 'company_email' ),
                 'phone' => get_option( 'company_phone' ),
                 'street' => get_option( 'company_street' ),
-                'number' => get_option( 'company_street_number' ),
+                'number' => '--',
                 'suburb' => get_option( 'company_suburb' ),
                 'crossStreet' => get_option( 'company_crossstring' ),
-                'reference' => get_option( 'company_address_reference' ),
+                'reference' => 'NA',
                 'originCode' => $origin_dane_code
             );
 
@@ -51,7 +51,7 @@ class RestClientApi extends BaseController
                 'number' => '--',
                 'suburb' => 'NA',
                 'crossStreet' => 'NA',
-                'reference' => ( ! empty( $order_data['shipping']['address_1'] ) ? $order_data['shipping']['address_1'] : 'NA' ),
+                'reference' => ( ! empty( $order_data['shipping']['address_2'] ) ? $order_data['shipping']['address_2'] : 'NA' ),
                 'originCode' => $destination_dane_code
             );
 
@@ -59,7 +59,7 @@ class RestClientApi extends BaseController
 
         		$product = $item->get_product();
 
-        		if( empty( $product->get_length() ) || empty( $product->get_height() ) || empty( $product->get_width() ) || ! $product->has_weight() || empty( get_option( 'company_name' ) ) || empty( get_option( 'company_first_name' ) ) || empty( get_option( 'company_last_name' ) ) || empty( get_option( 'company_email' ) ) || empty( get_option( 'company_phone' ) ) || empty( get_option( 'company_street' ) ) || empty( get_option( 'company_street_number' ) ) || empty( get_option( 'company_suburb' ) ) || empty( get_option( 'company_crossstring' ) ) || empty( get_option( 'company_address_reference' ) ) ) {
+        		if( empty( $product->get_length() ) || empty( $product->get_height() ) || empty( $product->get_width() ) || ! $product->has_weight() || empty( get_option( 'company_name' ) ) || empty( get_option( 'company_first_name' ) ) || empty( get_option( 'company_last_name' ) ) || empty( get_option( 'company_email' ) ) || empty( get_option( 'company_phone' ) ) || empty( get_option( 'company_street' ) ) || empty( get_option( 'company_suburb' ) ) || empty( get_option( 'company_crossstring' ) ) ) {
         			//TODO: Grab a user warning message.
         			continue;
         		}

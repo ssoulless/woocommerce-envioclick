@@ -77,7 +77,47 @@ class Admin extends BaseController
 			array(
 				'option_group' => 'envioclick_plugin_authentication',
 				'option_name' => 'api_key',
-				'callback' => array( $this->callbacks, 'secret_key_hashing' )
+				'callback' => array( $this->callbacks, 'text_field_sanitize' )
+			),
+			array(
+				'option_group' => 'envioclick_plugin_settings',
+				'option_name' => 'company_name',
+				'callback' => array( $this->callbacks, 'text_field_sanitize' )	
+			),
+			array(
+				'option_group' => 'envioclick_plugin_settings',
+				'option_name' => 'company_first_name',
+				'callback' => array( $this->callbacks, 'text_field_sanitize' )	
+			),
+			array(
+				'option_group' => 'envioclick_plugin_settings',
+				'option_name' => 'company_last_name',
+				'callback' => array( $this->callbacks, 'text_field_sanitize' )	
+			),
+			array(
+				'option_group' => 'envioclick_plugin_settings',
+				'option_name' => 'company_email',
+				'callback' => array( $this->callbacks, 'email_field_sanitize' )	
+			),
+			array(
+				'option_group' => 'envioclick_plugin_settings',
+				'option_name' => 'company_phone',
+				'callback' => array( $this->callbacks, 'text_field_sanitize' )	
+			),
+			array(
+				'option_group' => 'envioclick_plugin_settings',
+				'option_name' => 'company_street',
+				'callback' => array( $this->callbacks, 'text_field_sanitize' )	
+			),
+			array(
+				'option_group' => 'envioclick_plugin_settings',
+				'option_name' => 'company_crossstring',
+				'callback' => array( $this->callbacks, 'text_field_sanitize' )	
+			),
+			array(
+				'option_group' => 'envioclick_plugin_settings',
+				'option_name' => 'company_suburb',
+				'callback' => array( $this->callbacks, 'text_field_sanitize' )	
 			)
 		);
 
@@ -88,17 +128,24 @@ class Admin extends BaseController
 	{
 		$args = array(
 			array(
+				'id' => 'envioclick_admin_company_info',
+				'title' => __('Dirección de Origen', 'envioclick'),
+				'callback' => array( $this->callbacks, 'envioclick_company_info_section'),
+				'page' => 'envioclick_plugin'
+			),
+			array(
 				'id' => 'envioclick_admin_index',
-				'title' => 'Settings',
+				'title' => __('Settings'),
 				'callback' => array( $this->callbacks, 'envioclick_admin_section'),
 				'page' => 'envioclick_plugin'
 			),
 			array(
 				'id' => 'envioclick_authentication_index',
-				'title' => 'API Key Authentication',
+				'title' => __('API Key Authentication'),
 				'callback' => array( $this->callbacks, 'envioclick_authentication_section'),
 				'page' => 'envioclick_authentication'
-			)
+			),
+			
 		);
 
 		$this->settings->set_sections( $args );
@@ -121,13 +168,122 @@ class Admin extends BaseController
 			array(
 				'id' => 'envioclick_api_key',
 				'title' => 'API Key',
-				'callback' => array( $this->callbacks, 'envioclick_api_key_textfield'),
+				'callback' => array( $this->callbacks, 'envioclick_textfield'),
 				'page' => 'envioclick_authentication',
 				'section' => 'envioclick_authentication_index',
 				'args' => array(
 					'label_for' => 'envioclick_api_key',
 					'class' => 'envioclick_api_key'
+					'placeholder' => __('Pega la API key de envioclick aquí', 'envioclick')
+				)
+			),
+			array(
+				'id' => 'company_name',
+				'title' => __('Nombre de la empresa', 'envioclick'),
+				'callback' => array( $this->callbacks, 'envioclick_textfield'),
+				'page' => 'envioclick_plugin',
+				'section' => 'envioclick_admin_index',
+				'args' => array(
+					'label_for' => 'company_name',
+					'class' => 'company_name'
+					'placeholder' => __('Nombre de la empresa', 'envioclick')
 				) 
+			),
+			array(
+				'id' => 'company_first_name',
+				'title' => __('Nombre'),
+				'callback' => array( $this->callbacks, 'envioclick_textfield'),
+				'page' => 'envioclick_plugin',
+				'section' => 'envioclick_admin_index',
+				'args' => array(
+					'label_for' => 'company_first_name',
+					'class' => 'company_first_name'
+					'placeholder' => __('Nombre del representante', 'envioclick')
+				) 
+			),
+			array(
+				'id' => 'company_last_name',
+				'title' => __('Apellido'),
+				'callback' => array( $this->callbacks, 'envioclick_textfield'),
+				'page' => 'envioclick_plugin',
+				'section' => 'envioclick_admin_index',
+				'args' => array(
+					'label_for' => 'company_last_name',
+					'class' => 'company_last_name'
+					'placeholder' => __('Apellido del representante', 'envioclick')
+				) 
+			),
+			array(
+				'id' => 'company_email',
+				'title' => __('Correo electrónico para las notificaciones de envioclick', 'envioclick'),
+				'callback' => array( $this->callbacks, 'envioclick_textfield'),
+				'page' => 'envioclick_plugin',
+				'section' => 'envioclick_admin_index',
+				'args' => array(
+					'label_for' => 'company_email',
+					'class' => 'company_email'
+					'placeholder' => __('Correo electrónico', 'envioclick')
+				) 
+			),
+			array(
+				'id' => 'company_phone',
+				'title' => __('Teléfono'),
+				'callback' => array( $this->callbacks, 'envioclick_textfield'),
+				'page' => 'envioclick_plugin',
+				'section' => 'envioclick_admin_index',
+				'args' => array(
+					'label_for' => 'company_phone',
+					'class' => 'company_phone'
+					'placeholder' => __('Teléfono', 'envioclick')
+				) 
+			),
+			array(
+				'id' => 'company_phone',
+				'title' => __('Teléfono'),
+				'callback' => array( $this->callbacks, 'envioclick_textfield'),
+				'page' => 'envioclick_plugin',
+				'section' => 'envioclick_admin_index',
+				'args' => array(
+					'label_for' => 'company_phone',
+					'class' => 'company_phone'
+					'placeholder' => __('Teléfono', 'envioclick')
+				) 
+			),
+			array(
+				'id' => 'company_street',
+				'title' => __('Dirección', 'envioclick'),
+				'callback' => array( $this->callbacks, 'envioclick_textfield'),
+				'page' => 'envioclick_plugin',
+				'section' => 'envioclick_admin_index',
+				'args' => array(
+					'label_for' => 'company_street',
+					'class' => 'company_street'
+					'placeholder' => __('Dirección', 'envioclick')
+				)
+			),
+			array(
+				'id' => 'company_crossstring',
+				'title' => __('Bloque/Torre Oficina/apto', 'envioclick'),
+				'callback' => array( $this->callbacks, 'envioclick_textfield'),
+				'page' => 'envioclick_plugin',
+				'section' => 'envioclick_admin_index',
+				'args' => array(
+					'label_for' => 'company_crossstring',
+					'class' => 'company_crossstring'
+					'placeholder' => __('Bloque/Torre Oficina/apto', 'envioclick')
+				)
+			),
+			array(
+				'id' => 'company_suburb',
+				'title' => __('Barrio/Localidad', 'envioclick'),
+				'callback' => array( $this->callbacks, 'envioclick_textfield'),
+				'page' => 'envioclick_plugin',
+				'section' => 'envioclick_admin_index',
+				'args' => array(
+					'label_for' => 'company_suburb',
+					'class' => 'company_suburb'
+					'placeholder' => __('Barrio/Localidad', 'envioclick')
+				)
 			)
 		);
 

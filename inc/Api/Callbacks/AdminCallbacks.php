@@ -36,11 +36,18 @@ class AdminCallbacks extends BaseController
 		return $value;
 	}
 
-	public function secret_key_hashing( $input )
+	public function text_field_sanitize( $input )
 	{
-		$api_key = sanitize_text_field($input);
+		$value = sanitize_text_field($input);
 
-		return $api_key;
+		return $value;
+	}
+
+	public function email_field_sanitize( $input )
+	{
+		$value = sanitize_email( $input );
+
+		return $value;
 	}
 
 	public function envioclick_admin_section()
@@ -50,7 +57,12 @@ class AdminCallbacks extends BaseController
 
 	public function envioclick_authentication_section()
 	{
-		echo __('Ingresa tu API key generada desde tu cuenta de envioclick');
+		echo __('Ingresa tu API key generada desde tu cuenta de envioclick', 'envioclick');
+	}
+
+	public function envioclick_company_info_section()
+	{
+		echo __('Especifica la dirección de tu empresa, desde donde se van a recoger los envíos por parte de envioclick', 'envioclick');
 	}
 
 	public function envioclick_quotation_preference_select()
@@ -62,10 +74,13 @@ class AdminCallbacks extends BaseController
 			</select>';
 	}
 
-	public function envioclick_api_key_textfield()
+	public function envioclick_textfield( array $args)
 	{
+		$field_name = $args['label_for'];
+		$placeholder = $args['placeholder'];
+
 		$value = esc_attr( get_option( 'api_key' ) );
 		
-		echo '<input type="text" class="regular-text" name="api_key" value="' . $value . '" placeholder="' . __('Pega la API key de envioclick aquí', 'envioclick') . '">';		
+		echo "<input type='text' class='regular-text' name='$field_name' value='$value' placeholder='$placeholder' >";		
 	}
 }
